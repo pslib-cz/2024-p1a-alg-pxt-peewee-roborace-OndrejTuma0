@@ -11,21 +11,6 @@ const IR: IRC = {
     c: DigitalPin.P15,
     r: DigitalPin.P13
 }
-
-function drive(leftSpeed: number, rightSpeed: number) {
-    PCAmotor.MotorRun(PCAmotor.Motors.M1, leftSpeed)
-    PCAmotor.MotorRun(PCAmotor.Motors.M4, rightSpeed)
-}
-
-function isIntersection(): boolean {
-    let count = dataLeft + dataCenter + dataRight
-    if (count >= 2) {
-        return true
-    } else {
-        return false
-    }
-}
-
 pins.setPull(IR.l, PinPullMode.PullNone);
 pins.setPull(IR.c, PinPullMode.PullNone);
 pins.setPull(IR.r, PinPullMode.PullNone);
@@ -39,34 +24,70 @@ basic.forever(function () {
     dataLeft = pins.digitalReadPin(IR.l)
     dataRight = pins.digitalReadPin(IR.r);
     dataCenter = pins.digitalReadPin(IR.c);
-    
-    if (isIntersection()) {
-        if (turn === "L") {
-            drive(0, -255)
-            basic.pause(500)
-        } else if (turn === "C") {
-            drive(-255, -150)
-            basic.pause(500)
-        } else if (turn === "R") {
-            drive(-255, 0)
-            basic.pause(500)
-        }
-    } else {
-        if (dataCenter === 1) {
-            drive(-255, -150)
-        } else if (dataLeft === 1) {
-            drive(0, -255)
-        } else if (dataRight === 1) {
-            drive(-255, 0)
-        } else {
-            drive(100, 100)
-        }
-    }
 
-    console.log(turn)
-    basic.pause(20)
+        if (turn === "L") {
+            if (dataLeft + dataRight + dataCenter > 1) {
+                PCAmotor.MotorRun(PCAmotor.Motors.M1, -0)
+                PCAmotor.MotorRun(PCAmotor.Motors.M4, -0)
+                basic.pause(1000)
+                PCAmotor.MotorRun(PCAmotor.Motors.M1, -150)
+                PCAmotor.MotorRun(PCAmotor.Motors.M4, -75)
+                basic.pause(100)
+                PCAmotor.MotorRun(PCAmotor.Motors.M1, 200)
+                PCAmotor.MotorRun(PCAmotor.Motors.M4, -150)
+                basic.pause(500)
+                turn = "C"
+            } else if (dataCenter === 1) {
+                PCAmotor.MotorRun(PCAmotor.Motors.M1, -255)
+                PCAmotor.MotorRun(PCAmotor.Motors.M4, -150)
+            } else if (dataRight === 1) {
+                PCAmotor.MotorRun(PCAmotor.Motors.M1, -255)
+                PCAmotor.MotorRun(PCAmotor.Motors.M4, 0)
+            } else if (dataLeft === 1) {
+                PCAmotor.MotorRun(PCAmotor.Motors.M1, -0)
+                PCAmotor.MotorRun(PCAmotor.Motors.M4, -255)
+            }
+                
+        } 
+        else if (turn === "C" ) {
+             if (dataCenter === 1) {
+                PCAmotor.MotorRun(PCAmotor.Motors.M1, -255)
+                PCAmotor.MotorRun(PCAmotor.Motors.M4, -150)
+            } else if (dataRight === 1) {
+                PCAmotor.MotorRun(PCAmotor.Motors.M1, -255)
+                PCAmotor.MotorRun(PCAmotor.Motors.M4, 0)
+            } else if (dataLeft === 1) {
+                PCAmotor.MotorRun(PCAmotor.Motors.M1, -0)
+                PCAmotor.MotorRun(PCAmotor.Motors.M4, -255)
+            } 
+            
+        } else if (turn === "R") {
+            
+            if (dataLeft + dataRight + dataCenter > 1) {
+                PCAmotor.MotorRun(PCAmotor.Motors.M1, -0)
+                PCAmotor.MotorRun(PCAmotor.Motors.M4, -0)
+                basic.pause(1000)
+                PCAmotor.MotorRun(PCAmotor.Motors.M1, -150)
+                PCAmotor.MotorRun(PCAmotor.Motors.M4, -75)
+                basic.pause(100)
+                PCAmotor.MotorRun(PCAmotor.Motors.M1, -200)
+                PCAmotor.MotorRun(PCAmotor.Motors.M4, 150)
+                basic.pause(300)
+                
+                turn = "C"
+            } else if (dataCenter === 1) {
+                PCAmotor.MotorRun(PCAmotor.Motors.M1, -255)
+                PCAmotor.MotorRun(PCAmotor.Motors.M4, -150)
+            } else if (dataRight === 1) {
+                PCAmotor.MotorRun(PCAmotor.Motors.M1, -255)
+                PCAmotor.MotorRun(PCAmotor.Motors.M4, 0)
+            } else if (dataLeft === 1) {
+                PCAmotor.MotorRun(PCAmotor.Motors.M1, -0)
+                PCAmotor.MotorRun(PCAmotor.Motors.M4, -255)
+            }
+        }
 })
 
-radio.onReceivedString(function (receivedString: string) {
+radio.onReceivedString(function(receivedString: string) {
     turn = receivedString
 })
