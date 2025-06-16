@@ -25,69 +25,73 @@ basic.forever(function () {
     dataRight = pins.digitalReadPin(IR.r);
     dataCenter = pins.digitalReadPin(IR.c);
 
-        if (turn === "L") {
-            if (dataLeft + dataRight + dataCenter > 1) {
-                PCAmotor.MotorRun(PCAmotor.Motors.M1, -0)
-                PCAmotor.MotorRun(PCAmotor.Motors.M4, -0)
-                basic.pause(1000)
-                PCAmotor.MotorRun(PCAmotor.Motors.M1, -150)
-                PCAmotor.MotorRun(PCAmotor.Motors.M4, -75)
-                basic.pause(100)
-                PCAmotor.MotorRun(PCAmotor.Motors.M1, 200)
-                PCAmotor.MotorRun(PCAmotor.Motors.M4, -150)
-                basic.pause(500)
-                turn = "C"
-            } else if (dataCenter === 1) {
-                PCAmotor.MotorRun(PCAmotor.Motors.M1, -255)
-                PCAmotor.MotorRun(PCAmotor.Motors.M4, -150)
-            } else if (dataRight === 1) {
-                PCAmotor.MotorRun(PCAmotor.Motors.M1, -255)
-                PCAmotor.MotorRun(PCAmotor.Motors.M4, 0)
-            } else if (dataLeft === 1) {
-                PCAmotor.MotorRun(PCAmotor.Motors.M1, -0)
-                PCAmotor.MotorRun(PCAmotor.Motors.M4, -255)
-            }
-                
+    if (turn === "L") {
+        if (dataLeft + dataRight + dataCenter > 2) {
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, 0)
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, 0)
+            basic.pause(1000)
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, 255)
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, -255)
+            basic.pause(350)
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, 0)
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, 0)
+            basic.pause(300)
+            turn = "C"
+        } else if (dataCenter === 1) {
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, -255/1.4)
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, -150/1.4)
+        } else if (dataRight === 1) {
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, -255/1.5)
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, 0)
+        } else if (dataLeft === 1) {
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, 0)
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, -255/1.5)
         } 
-        else if (turn === "C" ) {
-             if (dataCenter === 1) {
-                PCAmotor.MotorRun(PCAmotor.Motors.M1, -255)
-                PCAmotor.MotorRun(PCAmotor.Motors.M4, -150)
-            } else if (dataRight === 1) {
-                PCAmotor.MotorRun(PCAmotor.Motors.M1, -255)
-                PCAmotor.MotorRun(PCAmotor.Motors.M4, 0)
-            } else if (dataLeft === 1) {
-                PCAmotor.MotorRun(PCAmotor.Motors.M1, -0)
-                PCAmotor.MotorRun(PCAmotor.Motors.M4, -255)
-            } 
+
+    }
+    else if (turn === "C") {
+        if (dataCenter === 1) {
             
-        } else if (turn === "R") {
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, -255/1.4)
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, -150/1.4)
+        } else if (dataRight === 1) {
             
-            if (dataLeft + dataRight + dataCenter > 1) {
-                PCAmotor.MotorRun(PCAmotor.Motors.M1, -0)
-                PCAmotor.MotorRun(PCAmotor.Motors.M4, -0)
-                basic.pause(1000)
-                PCAmotor.MotorRun(PCAmotor.Motors.M1, -150)
-                PCAmotor.MotorRun(PCAmotor.Motors.M4, -75)
-                basic.pause(100)
-                PCAmotor.MotorRun(PCAmotor.Motors.M1, -200)
-                PCAmotor.MotorRun(PCAmotor.Motors.M4, 150)
-                basic.pause(300)
-                
-                turn = "C"
-            } else if (dataCenter === 1) {
-                PCAmotor.MotorRun(PCAmotor.Motors.M1, -255)
-                PCAmotor.MotorRun(PCAmotor.Motors.M4, -150)
-            } else if (dataRight === 1) {
-                PCAmotor.MotorRun(PCAmotor.Motors.M1, -255)
-                PCAmotor.MotorRun(PCAmotor.Motors.M4, 0)
-            } else if (dataLeft === 1) {
-                PCAmotor.MotorRun(PCAmotor.Motors.M1, -0)
-                PCAmotor.MotorRun(PCAmotor.Motors.M4, -255)
-            }
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, -200/1.5)
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, 0)
+        } else if (dataLeft === 1) {
+           
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, 0)
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, -200/1.5)
+        } 
+
+    } else if (turn === "R") {
+
+        if (dataLeft + dataRight + dataCenter > 2) {
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, 0)
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, 0)
+            basic.pause(1000)
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, -150)
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, -75)
+            basic.pause(100)
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, -255)
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, 150)
+            basic.pause(350)
+
+            turn = "C"
+        } else if (dataCenter === 1) {
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, -255/1.4)
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, -150/1.4)
+        } else if (dataRight === 1) {
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, -255/1.5)
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, 0)
+        } else if (dataLeft === 1) {
+            PCAmotor.MotorRun(PCAmotor.Motors.M1, 0)
+            PCAmotor.MotorRun(PCAmotor.Motors.M4, -255/1.5)
         }
+    } 
+    
 })
 
-radio.onReceivedString(function(receivedString: string) {
+radio.onReceivedString(function (receivedString: string) {
     turn = receivedString
 })
